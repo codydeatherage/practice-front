@@ -10,12 +10,17 @@ export const updateMovieById = (id, payload) => api.put(`/movie/${id}`, payload)
 export const deleteMovieById = id => api.delete(`/movie/${id}`)
 export const getMovieById = id => api.get(`/movie/${id}`)
 
+export const insertSummoner = payload => api.post(`/summoner`, payload)
+export const searchByName = name => api.get(`/search/${name}`)
+
 const apis = {
     insertMovie,
     getAllMovies,
     updateMovieById,
     deleteMovieById,
     getMovieById,
+    searchByName,
+    insertSummoner
 }
 
 export default apis

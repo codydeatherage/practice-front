@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 
 import { NavBar } from '../components'
-import { MoviesList, MoviesInsert, MoviesUpdate } from '../pages/index'
+import { MoviesList, MoviesInsert, MoviesUpdate, SummonerSearch } from '../pages/index'
 
 import 'bootstrap/dist/css/bootstrap.min.css'
 
@@ -19,6 +19,7 @@ function App() {
                     exact
                     component={MoviesUpdate}
                 />
+                <Route path="/search" exact component={SummonerSearch}/>
             </Switch>
         </Router>
     )
