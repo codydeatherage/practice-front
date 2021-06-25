@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styled from 'styled-components'
 import api from '../api'
 import MatchList from './MatchList'
@@ -36,19 +36,15 @@ const CancelButton = styled.a.attrs({
 `
 const SummonerSearch = () => {
     const [name, setName] = useState('');
-    const [pid, setPid] = useState('');
     const [matchList, setMatchList] = useState([]);
+    const [ready, setReady] = useState(false);
     
- /*    const getMatchLists = async () => {
-        await api.getMatches(pid).then((res) =>{
-            
-        });
-    } */
-
     const handleSearch = async () =>{
         await api.searchByName(name).then((res)=>{
+            console.log('set ready');
             setMatchList(res.data.data);
-            console.log(`${name} id: ${res.data.data}`);
+            setReady(true);
+            console.log(`${name} id: ${res.data.data[0]}`);
         });
     }
 
@@ -63,7 +59,7 @@ const SummonerSearch = () => {
             />
             <Button onClick={()=>handleSearch()}>Search</Button>
             <CancelButton href={'/search'}>Cancel</CancelButton>
-            {matchList ? <MatchList matchList={matchList}/> : null}
+            {matchList && ready ? <MatchList matchList={matchList}/> : null}
         </Wrapper>
     )
 }

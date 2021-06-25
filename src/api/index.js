@@ -12,6 +12,7 @@ export const getMovieById = id => api.get(`/movie/${id}`)
 
 export const insertSummoner = payload => api.post(`/summoner`, payload)
 export const searchByName = name => api.get(`/search/${name}`)
+export const getMatchData = matchId => api.get(`/search/matches/${matchId}`)
 
 const apis = {
     insertMovie,
@@ -20,7 +21,8 @@ const apis = {
     deleteMovieById,
     getMovieById,
     searchByName,
-    insertSummoner
+    insertSummoner,
+    getMatchData
 }
 
 export default apis
