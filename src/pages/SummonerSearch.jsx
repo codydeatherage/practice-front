@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 import api from '../api'
+import MatchList from './MatchList'
 
 const Title = styled.h1.attrs({
     className: 'h1',
@@ -35,9 +36,18 @@ const CancelButton = styled.a.attrs({
 `
 const SummonerSearch = () => {
     const [name, setName] = useState('');
+    const [pid, setPid] = useState('');
+    const [matchList, setMatchList] = useState([]);
+    
+ /*    const getMatchLists = async () => {
+        await api.getMatches(pid).then((res) =>{
+            
+        });
+    } */
 
     const handleSearch = async () =>{
         await api.searchByName(name).then((res)=>{
+            setMatchList(res.data.data);
             console.log(`${name} id: ${res.data.data}`);
         });
     }
@@ -45,7 +55,6 @@ const SummonerSearch = () => {
     return (
         <Wrapper>
             <Title>Enter summoner name</Title>
-
             <Label>Name: </Label>
             <InputText
                 type="text"
@@ -54,6 +63,7 @@ const SummonerSearch = () => {
             />
             <Button onClick={()=>handleSearch()}>Search</Button>
             <CancelButton href={'/search'}>Cancel</CancelButton>
+            {matchList ? <MatchList matchList={matchList}/> : null}
         </Wrapper>
     )
 }
