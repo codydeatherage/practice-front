@@ -9,10 +9,12 @@ const Container = styled.div`
 const Label = styled.label`
     margin: 5px;
 `
-const MatchListItem = ({match}) => {
+const MatchListItem = ({match,data}) => {
+    console.log('Item',data);
     return (
         <Container>
-            <Label>{match}</Label>
+           {/*  <Label>{match}</Label> */}
+            {data ? <Label>{data.gameMode}</Label> : <Label>{match}</Label>}
         </Container>
     )
 }

@@ -21,43 +21,63 @@ const Label = styled.label`
 `
 
 const MatchList = ({ matchList }) => {
-    //initialized at 9 so 10 results are shown i.e. matchList[0:9]
     const [results, changeResults] = useState(10);
-    let data = [];
+    const [matchData, setMatchData] = useState([]);
+    const MAX_RESULTS = 100;
     let loaded = [];
+    let data = [];
 
     const loadNext10Results = () => {
-        if (results + 10 <= 100) {
+        if (results + 10 <= MAX_RESULTS) {
             changeResults(results + 10);
         }
     }
 
-    useEffect(async() => {
-        for(let i = 0; i < results; i++){
-            if(loaded.indexOf(matchList[i]) < 0){
-                await api.getMatchData(matchList[i]).then((res)=>{
-                    const {info} = res.data.data;
-                    if(data.indexOf(info) < 0){
-                        console.log(info);
+    useEffect(async () => {
+        console.log('Fetching match data ....');
+        for (let i = 0; i < results; i++) {
+            if (loaded.indexOf(matchList[i]) < 0) {
+                await api.getMatchData(matchList[i]).then((res) => {
+                    const { info } = res.data.data;
+                    loaded.push(matchList[i]);
+                    if (data.indexOf(info) < 0) {
                         data.push(info);
                     }
-            })
-            }
-        }
-        console.log(data[0].participants[7].championName);
-    })
-
-    return (
-        <Wrapper>
-            {
-                matchList.map((match, index) => {
-                    if (index < results) {
-                        return <MatchListItem match={match} key={index} />
+                }).then(() => {
+                    if (i === results - 1) {
+                        console.log('Matchdata finished');
+                        setMatchData(data);
+                        
                     }
                 })
             }
-            <LoadButton onClick={() => { loadNext10Results() }}>Load more</LoadButton>
-        </Wrapper>
-    )
+        }
+    }, [results])
+
+    if (matchData) {
+        console.log(matchData);
+        return (
+            <Wrapper>
+                {
+                    matchList.map((match, index) => {
+                        if (index < results) {
+                            let id = match.slice(4);
+                            /* console.log(matchData.find((game) => game.gameId == id)); */
+                            let gameData = matchData.find((game)=> game.gameId == id);
+                            return <MatchListItem match={match} data={gameData} key={index} />
+                        }
+                    })
+                }
+                <LoadButton onClick={() => { loadNext10Results() }}>Load more</LoadButton>
+            </Wrapper>
+        )
+    } else {
+        return (
+            <Wrapper>
+                <div >Loading...</div>
+            </Wrapper>
+        )
+    }
+
 }
 export default MatchList

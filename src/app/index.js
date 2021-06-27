@@ -9,10 +9,10 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 function App() {
     return (
         <Router>
-            <NavBar />
-            <MoviesList/>
+            <NavBar />{/* 
+            <MoviesList/> */}
             <Switch>
-                <Route path="/movies/list" exact component={MoviesList} />
+                {/* <Route path="/movies/list" exact component={MoviesList} /> */}
                 <Route path="/movies/create" exact component={MoviesInsert} />
                 <Route
                     path="/movies/update/:id"
