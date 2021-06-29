@@ -20,7 +20,7 @@ const Label = styled.label`
     margin: 5px;
 `
 
-const MatchList = ({ matchList }) => {
+const MatchList = ({ matchList, name }) => {
     const [results, changeResults] = useState(10);
     const [matchData, setMatchData] = useState([]);
     const MAX_RESULTS = 100;
@@ -64,7 +64,7 @@ const MatchList = ({ matchList }) => {
                             let id = match.slice(4);
                             /* console.log(matchData.find((game) => game.gameId == id)); */
                             let gameData = matchData.find((game)=> game.gameId == id);
-                            return <MatchListItem match={match} data={gameData} key={index} />
+                            return <MatchListItem name={name} match={match} data={gameData} key={index} />
                         }
                     })
                 }

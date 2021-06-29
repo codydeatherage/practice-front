@@ -57,9 +57,9 @@ const SummonerSearch = () => {
                 value={name}
                 onChange={(e)=>{setName(e.target.value)}}
             />
-            <Button onClick={()=>handleSearch()}>Search</Button>
+            <Button onClick={async ()=> await handleSearch()}>Search</Button>
             <CancelButton href={'/search'}>Cancel</CancelButton>
-            {matchList && ready ? <MatchList matchList={matchList}/> : null}
+            {matchList && ready ? <MatchList matchList={matchList} name={name}/> : null}
         </Wrapper>
     )
 }
