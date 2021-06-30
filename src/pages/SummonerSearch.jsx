@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import api from '../api'
 import MatchList from './MatchList'
@@ -38,15 +38,27 @@ const SummonerSearch = () => {
     const [name, setName] = useState('');
     const [matchList, setMatchList] = useState([]);
     const [ready, setReady] = useState(false);
-    
-    const handleSearch = async () =>{
-        await api.searchByName(name).then((res)=>{
+    const [fullName, setFullName] = useState('');
+
+    const handleSearch = async () => {
+        let n = '';
+        if(name === '' && fullName){
+            n = fullName;
+        }
+        else if(name !== ''){
+            n = name;
+        }
+        await api.searchByName(n).then((res) => {
             console.log('set ready');
             setMatchList(res.data.data);
             setReady(true);
-            console.log(`${name} id: ${res.data.data[0]}`);
+            console.log(`${n} id: ${res.data.data[0]}`);
         });
     }
+
+  /*   useEffect(async () => {
+       setMatchList([]);
+    }, [name]) */
 
     return (
         <Wrapper>
@@ -54,12 +66,19 @@ const SummonerSearch = () => {
             <Label>Name: </Label>
             <InputText
                 type="text"
-                value={name}
-                onChange={(e)=>{setName(e.target.value)}}
+                value={fullName}
+                onChange={(e) => { setFullName(e.target.value) }}
             />
-            <Button onClick={async ()=> await handleSearch()}>Search</Button>
+            <Button onClick={async () => {
+                setName(fullName);
+                if (fullName !== name) {
+                    setMatchList([]);
+                }
+                await handleSearch();
+            }
+            }>Search</Button>
             <CancelButton href={'/search'}>Cancel</CancelButton>
-            {matchList && ready ? <MatchList matchList={matchList} name={name}/> : null}
+            {matchList && ready ? <MatchList matchList={matchList} res={10} name={name} /> : null}
         </Wrapper>
     )
 }

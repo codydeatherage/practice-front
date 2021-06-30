@@ -20,7 +20,7 @@ const Label = styled.label`
     margin: 5px;
 `
 
-const MatchList = ({ matchList, name }) => {
+const MatchList = ({ matchList, name}) => {
     const [results, changeResults] = useState(10);
     const [matchData, setMatchData] = useState([]);
     const MAX_RESULTS = 100;
@@ -34,6 +34,8 @@ const MatchList = ({ matchList, name }) => {
     }
 
     useEffect(async () => {
+        data = [];
+        loaded = [];
         console.log('Fetching match data ....');
         for (let i = 0; i < results; i++) {
             if (loaded.indexOf(matchList[i]) < 0) {

@@ -13,7 +13,7 @@ const RoundImg = styled.div`
     border-radius: 50%;
     overflow: hidden;
     height: 50px;
-    margin-top: 15px;
+    margin: auto 5px;
     border: 2px solid green;
 `
 const TimesContainer = styled.div`
@@ -33,6 +33,21 @@ const Label = styled.label`
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 30px;
 `
+
+const SpellsContainer = styled.div`
+    display: flex;
+    flex-wrap: wrap;
+    margin: auto 0;
+    height: 50px;
+    width: 50px;
+    border: 1px solid blue;
+`
+
+const SpellImg = styled.img`
+    border: 1px solid green;
+    height: 47.5%;
+    width: 47.5%;
+`
 const MatchListItem = ({ match, data, name }) => {
     /* console.log('Item', data); */
 
@@ -48,22 +63,37 @@ const MatchListItem = ({ match, data, name }) => {
         else if (hours < 24) return hours + " hours";
         else return days + " Days"
     }
-
+    const getSummonerSpellName = (id) => {
+        switch (id) {
+            case 1: return 'SummonerBoost';
+            case 3: return 'SummonerExhaust';
+            case 4: return 'SummonerFlash';
+            case 6: return 'SummonerHaste';
+            case 7: return 'SummonerHeal';
+            case 11: return 'SummonerSmite';
+            case 12: return 'SummonerTeleport';
+            case 13: return 'SummonerMana';
+            case 14: return 'SummonerDot';
+            case 21: return 'SummonerBarrier';
+            case 30: return 'SummonerPoroRecall';
+            case 31: return 'SummonerPoroThrow';
+            case 32: return 'SummonerSnowball';
+            case 39: return 'SummonerSnowURFSnowball_Mark';
+        }
+    }
 
     let timeSinceGame = 0;
     if (data) {
         timeSinceGame = msToTime(currDate - data.gameCreation);
-        /*     const player = data.particpants.find((player) =>
-                player.summonerName === name
-            ); */
         let player = '';
-       /*  console.log(data); */
-         for (let d of data.participants) {
+        for (let d of data.participants) {
             if (d.summonerName.toLowerCase() === name.toLowerCase()) {
                 player = d;
             }
-        } 
+        }
         console.log(player);
+        let summoner1 = getSummonerSpellName(player.summoner1Id);
+        let summoner2 = getSummonerSpellName(player.summoner2Id);
         return (
             <Container>
                 {/*  <Label>{match}</Label> */}
@@ -78,21 +108,30 @@ const MatchListItem = ({ match, data, name }) => {
                         <RoundImg>
                             <ChampionImg src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/champion/${player.championName}.png`} alt=""></ChampionImg>
                         </RoundImg>
+                        <SpellsContainer>
+                            <SpellImg src={`https://ddragon.leagueoflegends.com/cdn/11.13.1/img/spell/${summoner1}.png`}></SpellImg>
+                            <SpellImg></SpellImg>
+                            <SpellImg src={`https://ddragon.leagueoflegends.com/cdn/11.13.1/img/spell/${summoner2}.png`}></SpellImg>
+                            <SpellImg></SpellImg>
+                        </SpellsContainer>
+                        <div>
+                            {`${player.kills}/${player.deaths}/${player.assists}`}
+                        </div>
                     </>
 
                     :
                     <>
-                    <Label>{match}</Label>
+                        <Label>{match}</Label>
                     </>
                 }
             </Container>
         )
-    }else{
-        return(
+    } else {
+        return (
             <Container>
                 <Label>Loading...</Label>
             </Container>
         )
     }
 }
-    export default MatchListItem
+export default MatchListItem
