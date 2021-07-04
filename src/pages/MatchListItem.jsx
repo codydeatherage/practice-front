@@ -1,5 +1,4 @@
 import styled from 'styled-components'
-
 const Container = styled.div`
     border: 2px solid red;
     height: 12vh;
@@ -8,7 +7,6 @@ const Container = styled.div`
     margin: 5px;
     display: flex;
 `
-
 const RoundImg = styled.div`
     border-radius: 50%;
     overflow: hidden;
@@ -33,7 +31,6 @@ const Label = styled.label`
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 30px;
 `
-
 const SpellsContainer = styled.div`
     display: flex;
     flex-wrap: wrap;
@@ -42,17 +39,22 @@ const SpellsContainer = styled.div`
     width: 50px;
     border: 1px solid blue;
 `
-
 const SpellImg = styled.img`
     border: 1px solid green;
     height: 47.5%;
     width: 47.5%;
 `
 const MatchListItem = ({ match, data, name }) => {
-    /* console.log('Item', data); */
-
-    let currDate = Date.now();
-
+    const findPlayer = (arr) =>{
+        let p= '';
+        for (let d of arr) {
+            if (d.summonerName.toLowerCase() === name.toLowerCase()) {
+                p = d;
+            }
+        }
+        return p;
+    }
+    
     function msToTime(ms) {
         let seconds = (ms / 1000).toFixed(0);
         let minutes = (ms / (1000 * 60)).toFixed(0);
@@ -63,6 +65,7 @@ const MatchListItem = ({ match, data, name }) => {
         else if (hours < 24) return hours + " hours";
         else return days + " Days"
     }
+
     const getSummonerSpellName = (id) => {
         switch (id) {
             case 1: return 'SummonerBoost';
@@ -79,24 +82,19 @@ const MatchListItem = ({ match, data, name }) => {
             case 31: return 'SummonerPoroThrow';
             case 32: return 'SummonerSnowball';
             case 39: return 'SummonerSnowURFSnowball_Mark';
+            default: console.log('COULDNT FIND NAME FOR ', id);
         }
     }
 
-    let timeSinceGame = 0;
     if (data) {
+        let timeSinceGame = 0;
+        let currDate = Date.now();
+        const player = findPlayer(data.participants);
         timeSinceGame = msToTime(currDate - data.gameCreation);
-        let player = '';
-        for (let d of data.participants) {
-            if (d.summonerName.toLowerCase() === name.toLowerCase()) {
-                player = d;
-            }
-        }
-        console.log(player);
         let summoner1 = getSummonerSpellName(player.summoner1Id);
         let summoner2 = getSummonerSpellName(player.summoner2Id);
         return (
             <Container>
-                {/*  <Label>{match}</Label> */}
                 {data ?
                     <>
                         <TimesContainer>

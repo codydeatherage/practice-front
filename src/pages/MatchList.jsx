@@ -7,7 +7,6 @@ const Wrapper = styled.div.attrs({
     className: 'form-group',
 })`
     border: 2px solid black;
-    /* margin: 0 10px; */
 `
 const LoadButton = styled.button.attrs({
     className: `btn btn-success`,
@@ -16,14 +15,11 @@ const LoadButton = styled.button.attrs({
     height: 5vh;
 `
 
-const Label = styled.label`
-    margin: 5px;
-`
-
-const MatchList = ({ matchList, name}) => {
+const MatchList = ({ matchList, name }) => {
     const [results, changeResults] = useState(10);
     const [matchData, setMatchData] = useState([]);
     const MAX_RESULTS = 100;
+
     let loaded = [];
     let data = [];
 
@@ -33,39 +29,60 @@ const MatchList = ({ matchList, name}) => {
         }
     }
 
-    useEffect(async () => {
-        data = [];
-        loaded = [];
+    useEffect(() => {
         console.log('Fetching match data ....');
-        for (let i = 0; i < results; i++) {
-            if (loaded.indexOf(matchList[i]) < 0) {
-                await api.getMatchData(matchList[i]).then((res) => {
-                    const { info } = res.data.data;
-                    loaded.push(matchList[i]);
-                    if (data.indexOf(info) < 0) {
-                        data.push(info);
-                    }
-                }).then(() => {
-                    if (i === results - 1) {
-                        console.log('Matchdata finished');
-                        setMatchData(data);
-                        
-                    }
-                })
+        const fetchData = async () => {
+            for (let i = 0; i < results; i++) {
+                if (loaded.indexOf(matchList[i]) < 0) {
+                    await api.getMatchData(matchList[i]).then((res) => {
+                        const { info } = res.data.data;
+                        loaded.push(matchList[i]);
+
+                        if (data.indexOf(info) < 0) {
+                            data.push(info);
+                            
+                        }
+
+                    }).then(() => {
+                        if (i === results - 1) {
+                            console.log('Matchdata finished');
+                            setMatchData(data);
+                        }
+                    })
+                }
             }
         }
+        fetchData();
+        /*         for (let i = 0; i < results; i++) {
+                    if (loaded.indexOf(matchList[i]) < 0) {
+                        await api.getMatchData(matchList[i]).then((res) => {
+                            const { info } = res.data.data;
+                            loaded.push(matchList[i]);
+        
+                            if (data.indexOf(info) < 0) {
+                                data.push(info);
+                                count++;
+                            }
+        
+                        }).then(() => {
+                            if (i === results - 1) {
+                                console.log('Matchdata finished');
+                                setMatchData(data);
+                            }
+                        })
+                    }
+                } */
+       /*  console.log(`${count} games data retrieved`); */
     }, [results])
 
-    if (matchData) {
-        console.log(matchData);
+    if (matchData.length > 0) {
         return (
             <Wrapper>
                 {
                     matchList.map((match, index) => {
                         if (index < results) {
                             let id = match.slice(4);
-                            /* console.log(matchData.find((game) => game.gameId == id)); */
-                            let gameData = matchData.find((game)=> game.gameId == id);
+                            let gameData = matchData.find((game) => game.gameId === parseInt(id));
                             return <MatchListItem name={name} match={match} data={gameData} key={index} />
                         }
                     })

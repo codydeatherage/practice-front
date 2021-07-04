@@ -41,24 +41,21 @@ const SummonerSearch = () => {
     const [fullName, setFullName] = useState('');
 
     const handleSearch = async () => {
-        let n = '';
-        if(name === '' && fullName){
-            n = fullName;
-        }
-        else if(name !== ''){
-            n = name;
-        }
-        await api.searchByName(n).then((res) => {
+        setReady(false);
+        console.log('name searched', fullName);
+        await api.searchByName(fullName).then((res) => {
             console.log('set ready');
             setMatchList(res.data.data);
-            setReady(true);
-            console.log(`${n} id: ${res.data.data[0]}`);
+            setName(fullName)
+            console.log(`${fullName} id: ${res.data.data[0]}`);
         });
     }
 
-  /*   useEffect(async () => {
-       setMatchList([]);
-    }, [name]) */
+    useEffect(() => {
+        if (matchList.length > 0) {
+            setReady(true)
+        }
+    }, [matchList])
 
     return (
         <Wrapper>
@@ -67,18 +64,14 @@ const SummonerSearch = () => {
             <InputText
                 type="text"
                 value={fullName}
-                onChange={(e) => { setFullName(e.target.value) }}
+                onChange={(e) => {setFullName(e.target.value)}}
             />
             <Button onClick={async () => {
-                setName(fullName);
-                if (fullName !== name) {
-                    setMatchList([]);
-                }
                 await handleSearch();
             }
             }>Search</Button>
             <CancelButton href={'/search'}>Cancel</CancelButton>
-            {matchList && ready ? <MatchList matchList={matchList} res={10} name={name} /> : null}
+            {matchList.length > 0 && ready ? <MatchList matchList={matchList} res={10} name={name} /> : null}
         </Wrapper>
     )
 }
