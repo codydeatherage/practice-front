@@ -7,6 +7,7 @@ const Wrapper = styled.div.attrs({
     className: 'form-group',
 })`
     border: 2px solid black;
+    background-color: ${props=>props.primary};
 `
 const LoadButton = styled.button.attrs({
     className: `btn btn-success`,
@@ -77,7 +78,7 @@ const MatchList = ({ matchList, name }) => {
 
     if (matchData.length > 0) {
         return (
-            <Wrapper>
+            <Wrapper primary="blue">
                 {
                     matchList.map((match, index) => {
                         if (index < results) {

@@ -1,9 +1,14 @@
 import styled from 'styled-components'
+import SpellsContainer from './../components/SpellsContainer'
+
 const Container = styled.div`
-    border: 2px solid red;
+    border: 3px solid green;
     height: 12vh;
     width: 690px;
-    background-color: #73C2EA
+  
+    background-color: ${props => props.bg ? "#F2374E" : "#2EB3F7"};
+    
+    border-color: ${props => props.primary}
     margin: 5px;
     display: flex;
 `
@@ -31,20 +36,35 @@ const Label = styled.label`
     font-family: Arial, Helvetica, sans-serif;
     font-weight: 30px;
 `
-const SpellsContainer = styled.div`
+
+const ItemsContainer = styled.div`
     display: flex;
-    flex-wrap: wrap;
+    border: 1px solid black;
+    height: 40%;
     margin: auto 0;
-    height: 50px;
-    width: 50px;
-    border: 1px solid blue;
-    background-color: black;
+    width: 250px;
 `
-const SpellImg = styled.img`
+
+const ItemImg = styled.img`
     border: 1px solid green;
-    height: 47.5%;
-    width: 47.5%;
+    width: 17%;
+    height: 100%;
 `
+const ItemFiller = styled.div`
+    border: 1pc solid green;
+    width:17%;
+    height: 100%;
+`
+
+const ParticipantsContainer = styled.div`
+    width: 25%;
+    height: 80%;
+    margin: auto 0;
+    margin-left: 3%;
+    border: 2px solid black;
+
+`
+
 const MatchListItem = ({ match, data, name }) => {
     const findPlayer = (arr) => {
         let p = '';
@@ -123,6 +143,7 @@ const MatchListItem = ({ match, data, name }) => {
         let timeSinceGame = 0;
         let currDate = Date.now();
         const player = findPlayer(data.participants);
+        console.log(player);
         timeSinceGame = msToTime(currDate - data.gameCreation);
         let summoner1 = getSummonerSpellName(player.summoner1Id);
         let summoner2 = getSummonerSpellName(player.summoner2Id);
@@ -151,8 +172,24 @@ const MatchListItem = ({ match, data, name }) => {
 
         const secRune = { name: secondStyle, icon: secondStyleIcon }
         let runes = [primaryRune, secRune];
+        let spells = [//Riot's data dragon for these assets [summonerSpell1, runes[0], summonerSpell2, runes[1]]
+            `https://ddragon.leagueoflegends.com/cdn/11.13.1/img/spell/${summoner1}.png`,
+            `https://ddragon.leagueoflegends.com/cdn/img/${runes[0].icon}`,
+            `https://ddragon.leagueoflegends.com/cdn/11.13.1/img/spell/${summoner2}.png`,
+            `https://ddragon.leagueoflegends.com/cdn/img/${runes[1].icon}`
+        ];
+        let items = [
+            player.item0,
+            player.item1,
+            player.item2,
+            player.item3,
+            player.item4,
+            player.item5,
+            player.item6,
+        ]
+        /* console.log('items', items); */
         return (
-            <Container>
+            <Container primary="white" bg={player.win}>
                 {data ?
                     <>
                         <TimesContainer>
@@ -164,15 +201,21 @@ const MatchListItem = ({ match, data, name }) => {
                         <RoundImg>
                             <ChampionImg src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/champion/${player.championName}.png`} alt=""></ChampionImg>
                         </RoundImg>
-                        <SpellsContainer>
-                            <SpellImg src={`https://ddragon.leagueoflegends.com/cdn/11.13.1/img/spell/${summoner1}.png`}></SpellImg>
-                            <SpellImg src={`https://ddragon.leagueoflegends.com/cdn/img/${runes[0].icon}`}></SpellImg>
-                            <SpellImg src={`https://ddragon.leagueoflegends.com/cdn/11.13.1/img/spell/${summoner2}.png`}></SpellImg>
-                            <SpellImg src={`https://ddragon.leagueoflegends.com/cdn/img/${runes[1].icon}`}></SpellImg>
-                        </SpellsContainer>
-                        <div>
+                        <SpellsContainer spells={spells}></SpellsContainer>
+                        <div className="my-auto">
                             {`${player.kills}/${player.deaths}/${player.assists}`}
                         </div>
+                        <ItemsContainer>
+                            {items.map((item, index) => {
+                                if (item !== 0) {
+                                    return <ItemImg src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/item/${item}.png`}></ItemImg>
+                                } else {
+                                    return <ItemFiller></ItemFiller>
+                                }
+                            })}
+                        </ItemsContainer>
+                        <ParticipantsContainer></ParticipantsContainer>
+
                     </>
 
                     :
@@ -184,7 +227,7 @@ const MatchListItem = ({ match, data, name }) => {
         )
     } else {
         return (
-            <Container>
+            <Container primary="blue">
                 <Label>Loading...</Label>
             </Container>
         )
