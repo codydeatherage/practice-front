@@ -11,8 +11,8 @@ background-color: black;
 `
 const Img = styled.img`
 border: 1px solid green;
-height: 47.5%;
-width: 47.5%;
+height: 49%;
+width: 49%;
 `
 const SpellsContainer = ({spells}) =>{
     return(

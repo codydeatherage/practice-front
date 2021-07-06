@@ -1,13 +1,13 @@
 import styled from 'styled-components'
 import SpellsContainer from './../components/SpellsContainer'
+import PlayerList from './../components/PlayerList'
+import ItemList from './../components/ItemList'
 
 const Container = styled.div`
     border: 3px solid green;
     height: 12vh;
-    width: 690px;
-  
-    background-color: ${props => props.bg ? "#F2374E" : "#2EB3F7"};
-    
+    width: 800px;
+    background-color: ${props => props.bg ?  "#2EB3F7": "#F2374E"};
     border-color: ${props => props.primary}
     margin: 5px;
     display: flex;
@@ -25,7 +25,6 @@ const TimesContainer = styled.div`
     height: 100%;
     width: 70px;
     margin-left:0;
-
 `
 const ChampionImg = styled.img`
     height: 50px;
@@ -37,33 +36,6 @@ const Label = styled.label`
     font-weight: 30px;
 `
 
-const ItemsContainer = styled.div`
-    display: flex;
-    border: 1px solid black;
-    height: 40%;
-    margin: auto 0;
-    width: 250px;
-`
-
-const ItemImg = styled.img`
-    border: 1px solid green;
-    width: 17%;
-    height: 100%;
-`
-const ItemFiller = styled.div`
-    border: 1pc solid green;
-    width:17%;
-    height: 100%;
-`
-
-const ParticipantsContainer = styled.div`
-    width: 25%;
-    height: 80%;
-    margin: auto 0;
-    margin-left: 3%;
-    border: 2px solid black;
-
-`
 
 const MatchListItem = ({ match, data, name }) => {
     const findPlayer = (arr) => {
@@ -187,7 +159,7 @@ const MatchListItem = ({ match, data, name }) => {
             player.item5,
             player.item6,
         ]
-        /* console.log('items', items); */
+
         return (
             <Container primary="white" bg={player.win}>
                 {data ?
@@ -205,17 +177,8 @@ const MatchListItem = ({ match, data, name }) => {
                         <div className="my-auto">
                             {`${player.kills}/${player.deaths}/${player.assists}`}
                         </div>
-                        <ItemsContainer>
-                            {items.map((item, index) => {
-                                if (item !== 0) {
-                                    return <ItemImg src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/item/${item}.png`}></ItemImg>
-                                } else {
-                                    return <ItemFiller></ItemFiller>
-                                }
-                            })}
-                        </ItemsContainer>
-                        <ParticipantsContainer></ParticipantsContainer>
-
+                        <ItemList items={items}></ItemList>
+                        <PlayerList players={data.participants}/>
                     </>
 
                     :
