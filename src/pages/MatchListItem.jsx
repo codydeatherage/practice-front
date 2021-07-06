@@ -1,13 +1,11 @@
 import styled from 'styled-components'
-import SpellsContainer from './../components/SpellsContainer'
-import PlayerList from './../components/PlayerList'
-import ItemList from './../components/ItemList'
+import { SpellsContainer, PlayerList, ItemList } from '../components/index'
 
 const Container = styled.div`
     border: 3px solid green;
     height: 12vh;
     width: 800px;
-    background-color: ${props => props.bg ?  "#2EB3F7": "#F2374E"};
+    background-color: ${props => props.bg ? "#2EB3F7" : "#F2374E"};
     border-color: ${props => props.primary}
     margin: 5px;
     display: flex;
@@ -36,8 +34,7 @@ const Label = styled.label`
     font-weight: 30px;
 `
 
-
-const MatchListItem = ({ match, data, name }) => {
+const MatchListItem = ({ data, name }) => {
     const findPlayer = (arr) => {
         let p = '';
         for (let d of arr) {
@@ -151,41 +148,27 @@ const MatchListItem = ({ match, data, name }) => {
             `https://ddragon.leagueoflegends.com/cdn/img/${runes[1].icon}`
         ];
         let items = [
-            player.item0,
-            player.item1,
-            player.item2,
-            player.item3,
-            player.item4,
-            player.item5,
+            player.item0, player.item1, player.item2,
+            player.item3, player.item4, player.item5,
             player.item6,
         ]
 
         return (
             <Container primary="white" bg={player.win}>
-                {data ?
-                    <>
-                        <TimesContainer>
-                            <Label>{data.gameMode}</Label>
-                            <Label>{`${timeSinceGame}`}</Label>
-                            <Label>{`${player.summonerName}`}</Label>
-
-                        </TimesContainer>
-                        <RoundImg>
-                            <ChampionImg src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/champion/${player.championName}.png`} alt=""></ChampionImg>
-                        </RoundImg>
-                        <SpellsContainer spells={spells}></SpellsContainer>
-                        <div className="my-auto">
-                            {`${player.kills}/${player.deaths}/${player.assists}`}
-                        </div>
-                        <ItemList items={items}></ItemList>
-                        <PlayerList players={data.participants}/>
-                    </>
-
-                    :
-                    <>
-                        <Label>{match}</Label>
-                    </>
-                }
+                <TimesContainer>
+                    <Label>{data.gameMode}</Label>
+                    <Label>{`${timeSinceGame}`}</Label>
+                    <Label>{`${player.summonerName}`}</Label>
+                </TimesContainer>
+                <RoundImg>
+                    <ChampionImg src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/champion/${player.championName}.png`} alt=""></ChampionImg>
+                </RoundImg>
+                <SpellsContainer spells={spells}></SpellsContainer>
+                <div className="my-auto">
+                    {`${player.kills}/${player.deaths}/${player.assists}`}
+                </div>
+                <ItemList items={items}></ItemList>
+                <PlayerList players={data.participants} />
             </Container>
         )
     } else {
