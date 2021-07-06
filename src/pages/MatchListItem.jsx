@@ -1,4 +1,7 @@
 import styled from 'styled-components'
+import {useRef, useEffect} from 'react'
+import {useParams} from 'react-router-dom'
+
 import { SpellsContainer, PlayerList, ItemList } from '../components/index'
 
 const Container = styled.div`
@@ -34,7 +37,8 @@ const Label = styled.label`
     font-weight: 30px;
 `
 
-const MatchListItem = ({ data, name }) => {
+const MatchListItem = ({ data , search }) => {
+    const {name} = useParams();
     const findPlayer = (arr) => {
         let p = '';
         for (let d of arr) {
@@ -44,6 +48,16 @@ const MatchListItem = ({ data, name }) => {
         }
         return p;
     }
+    const mounted = useRef();
+
+    useEffect(() => {
+      if (!mounted.current) {
+        // do componentDidMount logic
+        mounted.current = true;
+      } else {
+     /*    search(); */
+      }
+    });
 
     function msToTime(ms) {
         let seconds = (ms / 1000).toFixed(0);
@@ -72,7 +86,7 @@ const MatchListItem = ({ data, name }) => {
             case 31: return 'SummonerPoroThrow';
             case 32: return 'SummonerSnowball';
             case 39: return 'SummonerSnowURFSnowball_Mark';
-            default: console.log('COULDNT FIND NAME FOR ', id);
+            /* default: console.log('COULDNT FIND NAME FOR ', id); */
         }
     }
 
@@ -112,7 +126,7 @@ const MatchListItem = ({ data, name }) => {
         let timeSinceGame = 0;
         let currDate = Date.now();
         const player = findPlayer(data.participants);
-        console.log(player);
+        /* console.log(player); */
         timeSinceGame = msToTime(currDate - data.gameCreation);
         let summoner1 = getSummonerSpellName(player.summoner1Id);
         let summoner2 = getSummonerSpellName(player.summoner2Id);
@@ -168,7 +182,7 @@ const MatchListItem = ({ data, name }) => {
                     {`${player.kills}/${player.deaths}/${player.assists}`}
                 </div>
                 <ItemList items={items}></ItemList>
-                <PlayerList players={data.participants} />
+                <PlayerList search={search} players={data.participants} />
             </Container>
         )
     } else {

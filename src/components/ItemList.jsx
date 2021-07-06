@@ -31,7 +31,7 @@ const ItemList = ({ items }) => {
                 {items.map((item, index) => {
                     if (item !== 0) {
                         return (
-                            <ImgContainer>
+                            <ImgContainer key={index}>
                                 <Img src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/item/${item}.png`} alt=""/>
                             </ImgContainer>
                         )

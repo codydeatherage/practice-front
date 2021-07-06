@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import styled from 'styled-components'
 import api from '../api'
 import MatchList from './MatchList'
@@ -64,12 +65,15 @@ const SummonerSearch = () => {
             <InputText
                 type="text"
                 value={fullName}
-                onChange={(e) => {setFullName(e.target.value)}}
+                onChange={(e) => { setFullName(e.target.value) }}
             />
-            <Button onClick={async () => {
-                await handleSearch();
-            }
-            }>Search</Button>
+            <Link to={`/search/${fullName}`}>
+                <Button onClick={async () => {
+                    /* await handleSearch(); */
+                }
+
+                }>Search</Button>
+            </Link>
             <CancelButton href={'/search'}>Cancel</CancelButton>
             {matchList.length > 0 && ready ? <MatchList matchList={matchList} res={10} name={name} /> : null}
         </Wrapper>

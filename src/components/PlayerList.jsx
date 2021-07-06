@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-
+import { Link } from 'react-router-dom'
 const Container = styled.div`
     display: flex;
     width: 30%;
@@ -36,7 +36,7 @@ const Label = styled.div`
     font-size: 13px;
 `
 
-const PlayerList = ({ players }) => {
+const PlayerList = ({ players, search }) => {
     let leftTeam = [];
     let rightTeam = [];
     for (let p of players) {
@@ -49,24 +49,28 @@ const PlayerList = ({ players }) => {
     }
     return (
         <Container>
-            <Team>
-                {leftTeam.map((player) => {
+            <Team key={1}>
+                {leftTeam.map((player, index) => {
                     return (
-                        <Player>
-                            <ChampionSplash src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/champion/${player.championName}.png`} alt="" />
-                            <Label>{player.summonerName}</Label>
-                        </Player>
+                        <Link onClick={() => search(player.summonerName)} to={`/search/${player.summonerName}`}>
+                            <Player key={index + player.summonerName}>
+                                <ChampionSplash src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/champion/${player.championName}.png`} key={index + player.summonerName + 1} alt="" />
+                                <Label key={index + player.summonerName + 2} >{player.summonerName + 2}</Label>
+                            </Player>
+                        </Link>
                     )
 
                 })}
             </Team>
-            <Team>
-                {rightTeam.map((player) => {
+            <Team key={2}>
+                {rightTeam.map((player, index) => {
                     return (
-                        <Player>
-                            <ChampionSplash src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/champion/${player.championName}.png`} alt="" />
-                            <Label>{player.summonerName}</Label>
-                        </Player>
+                        <Link onClick={() => search(player.summonerName)} to={`/search/${player.summonerName}`}>
+                            <Player key={index + player.summonerName}>
+                                <ChampionSplash key={index + player.summonerName + 1} src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/champion/${player.championName}.png`} alt="" />
+                                <Label key={index + player.summonerName + 2} >{player.summonerName}</Label>
+                            </Player>
+                        </Link>
                     )
 
                 })}

@@ -16,14 +16,13 @@ const LoadButton = styled.button.attrs({
     height: 5vh;
 `
 
-const MatchList = ({ matchList, name }) => {
+const MatchList = ({ matchList, search }) => {
     const [results, changeResults] = useState(10);
     const [matchData, setMatchData] = useState([]);
     const MAX_RESULTS = 100;
 
     let loaded = [];
     let data = [];
-
     const loadNext10Results = () => {
         if (results + 10 <= MAX_RESULTS) {
             changeResults(results + 10);
@@ -54,28 +53,9 @@ const MatchList = ({ matchList, name }) => {
             }
         }
         fetchData();
-        /*         for (let i = 0; i < results; i++) {
-                    if (loaded.indexOf(matchList[i]) < 0) {
-                        await api.getMatchData(matchList[i]).then((res) => {
-                            const { info } = res.data.data;
-                            loaded.push(matchList[i]);
-        
-                            if (data.indexOf(info) < 0) {
-                                data.push(info);
-                                count++;
-                            }
-        
-                        }).then(() => {
-                            if (i === results - 1) {
-                                console.log('Matchdata finished');
-                                setMatchData(data);
-                            }
-                        })
-                    }
-                } */
-       /*  console.log(`${count} games data retrieved`); */
     }, [results])
-
+   /*  let id = matchList[0].slice(4);
+    let gameData = matchData.find((game) => game.gameId === parseInt(id)); */
     if (matchData.length > 0) {
         return (
             <Wrapper primary="blue">
@@ -84,7 +64,7 @@ const MatchList = ({ matchList, name }) => {
                         if (index < results) {
                             let id = match.slice(4);
                             let gameData = matchData.find((game) => game.gameId === parseInt(id));
-                            return <MatchListItem name={name} match={match} data={gameData} key={index} />
+                            return <MatchListItem /* name={name} */ match={match} data={gameData} key={index} search={search} />
                         }
                     })
                 }
