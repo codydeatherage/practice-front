@@ -7,6 +7,7 @@ const Container = styled.div`
     margin: auto;
     margin-right: 0;
 `
+
 const Team = styled.div`
     width: 50%;
     height: 100%;
@@ -55,7 +56,7 @@ const PlayerList = ({ players, search }) => {
                         <Link onClick={() => search(player.summonerName)} to={`/search/${player.summonerName}`}>
                             <Player key={index + player.summonerName}>
                                 <ChampionSplash src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/champion/${player.championName}.png`} key={index + player.summonerName + 1} alt="" />
-                                <Label key={index + player.summonerName + 2} >{player.summonerName + 2}</Label>
+                                <Label key={index + player.summonerName + 2} >{player.summonerName}</Label>
                             </Player>
                         </Link>
                     )
