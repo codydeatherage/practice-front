@@ -1,6 +1,9 @@
 import styled from 'styled-components'
-import { useEffect, useState } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
+import Item from './Item'
+import { Tooltip } from '@material-ui/core';
 import axios from 'axios'
+
 const Container = styled.div`
     border: 1px solid black;
     display: flex;
@@ -8,16 +11,7 @@ const Container = styled.div`
     margin: auto 0;
     padding: 1%;
     width: 310px;
-`
-
-const HoverContainer = styled.div`
-    height: 100px;
-    width: 100px;
-    z-index: -100;
-    background-color: black;
-
-`
-
+`   
 
 const ImgContainer = styled.div`
     border-radius: 10%;
@@ -37,8 +31,8 @@ const Img = styled.img`
 
 const ItemList = ({ items }) => {
     const [itemDetails, setItemDetails] = useState([]);
-    const [hovered, setHovered] = useState('');
     useEffect(() => {
+        let itemDetails = [];
         const fetchData = async (items) => {
             await axios.get('http://ddragon.leagueoflegends.com/cdn/11.14.1/data/en_US/item.json')
                 .then(async (res) => {
@@ -65,14 +59,23 @@ const ItemList = ({ items }) => {
                 {items.map((item, index) => {
                     if (item !== 0) {
                         return (
-                            <ImgContainer onMouseOver={()=>setHovered(true)} onMouseLeave={()=>setHovered(false)} key={index}>
-                                {itemDetails && hovered ? <HoverContainer/> : null}
-                               
-                                <Img src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/item/${item}.png`} alt="" />
-                            </ImgContainer>
+                            <Item item={item}></Item>
+                            /* 
+                            <Tooltip>
+                                <ImgContainer onMouseOver={() => setHovered(true)} onMouseLeave={() => setHovered(false)} key={index}>
+                                    {itemDetails && hovered ? <ItemDetails/>: null}
+
+                                    <Img src={`http://ddragon.leagueoflegends.com/cdn/11.13.1/img/item/${item}.png`} alt="" />
+                                </ImgContainer>
+                            </Tooltip> */
                         )
                     } else {
-                        return <ImgContainer />
+                        return (
+                            <Tooltip title="item">
+                                <ImgContainer />
+                            </Tooltip>
+
+                        )
                     }
                 })
                 }

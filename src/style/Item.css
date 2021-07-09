@@ -1,0 +1,11 @@
+.MuiTooltip-popper{
+    height: fit-content;
+    width: fit-content;
+
+}
+
+.MuiTooltip-tooltip{
+    height: fit-content;
+    width: fit-content;
+    margin-bottom: 2%;
+}
