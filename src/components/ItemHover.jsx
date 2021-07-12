@@ -34,17 +34,18 @@ const Name = styled.h1`
 `
 
 const ItemHover = ({ details }) => {
-    console.log(details.description);
-
-    if(parseInt(details.description[0])){
+    //console.log(details.description);
+    let stats =[];
+    if (parseInt(details.description[0])) {
         const regexPassives = /(?:[A-Z]?[a-z]*:)/g;
-        console.log(details.description.search(regexPassives));
+        console.log(details.description);
         const statsStr = details.description.slice(0, details.description.search(regexPassives));
-        console.log(statsStr);
-        let stats = [];
+        //console.log(statsStr);
         const regexStats = /(?<=[a-z])\d/;
-        console.log(statsStr.split(0, statsStr.search(regexStats)));
-
+        console.log(statsStr);
+        let numStats = statsStr.split(0, statsStr.search(regexStats)).length;
+        //stats = statsStr.split(0, statsStr.search(/\d+\D*/gm));
+        stats = statsStr.match(/\d+\D*/gm);
 
     }
     return (
@@ -56,7 +57,9 @@ const ItemHover = ({ details }) => {
                 <Label>{details.plaintext}</Label>
             </Span>
             <Span>
-                <Label>Stats</Label>
+                {stats.map((st, index)=>{
+                    return <Label>{st}</Label>
+                })}
             </Span>
             <Span>
                 <Label>Passive</Label>
